@@ -52,7 +52,12 @@ We provide the synthetic dataset we used to train MegaPose. The dataset contains
 
 
 # Installation
-Once you are done with the installation, we recommend you head to the [Inference tutorial](#inference-tutorial).
+Once you are done with the installation, we recommend you head to the [Inference tutorial](#inference-tutorial). The first step is to clone the repo and update the submodules.
+
+```
+git clone git@github.com:megapose6d/megapose6d.git
+cd megapose 6d && git submodule update --init
+```
 ## 1. Set environment variables
 You should set the following environment variables:
 - `MEGAPOSE_DIR`:  The root directory of the `megapose` project.
