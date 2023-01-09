@@ -450,4 +450,7 @@ python setup.py sdist bdist_wheel
 
 
 # License
-Unless otherwise specified, all code in this repository is made available under the [Apache 2.0 License](LICENSE).
+Unless otherwise specified, all code in this repository is authored by Inria and Nvidia. It is made available under the [Apache 2.0 License](LICENSE).
+
+# Acknowledgments
+This work was partially supported by the HPC resources from GENCI-IDRIS (Grant 011011181R2), the European Regional Development Fund under the project IMPACT (reg. no. CZ.02.1.01/0.0/0.0/15 003/0000468), EU Horizon Europe Programme under the project AGIMUS (No. 101070165), Louis Vuitton ENS Chair on Artificial Intelligence, and the French government under management of Agence Nationale de la Recherche as part of the "Investissements d'avenir" program, reference ANR-19-P3IA-0001 (PRAIRIE 3IA Institute).
