@@ -1,0 +1,3 @@
+[submodule "deps/bop_toolkit_challenge"]
+	path = deps/bop_toolkit_challenge
+	url = https://github.com/ylabbe/bop_toolkit_challenge

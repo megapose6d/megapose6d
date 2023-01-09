@@ -1,0 +1,79 @@
+# SPDX-FileCopyrightText: Copyright (c) 2022 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: MIT
+#
+# Permission is hereby granted, free of charge, to any person obtaining a
+# copy of this software and associated documentation files (the "Software"),
+# to deal in the Software without restriction, including without limitation
+# the rights to use, copy, modify, merge, publish, distribute, sublicense,
+# and/or sell copies of the Software, and to permit persons to whom the
+# Software is furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+# THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+# DEALINGS IN THE SOFTWARE.
+
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools>=45", "wheel"]
+
+[tool.black]
+extend-exclude = "deprecated|.ipynb|deps|local_data"
+line-length = 100
+
+# See the `setuptools_scm` documentation for the description of the schemes used below.
+# https://pypi.org/project/setuptools-scm/
+# NOTE: If these values are updated, they need to be also updated in `srl/__init__.py`.
+# [tool.setuptools_scm]
+# local_scheme = "dirty-tag"
+# version_scheme = "no-guess-dev"
+
+[tool.isort]
+# Multi line output mode 3 is used to conform with Black. See
+# https://github.com/PyCQA/isort#multi-line-output-modes
+import_heading_firstparty = "MegaPose"
+import_heading_localfolder = "Local Folder"
+import_heading_stdlib = "Standard Library"
+import_heading_thirdparty = "Third Party"
+known_first_party = ['megapose']
+multi_line_output = 3
+profile = "black"
+skip = ['local_data', 'build', 'deps']
+
+[tool.pytest.ini_options]
+norecursedirs = [".git", ".venv", "deprecated", "dist"]
+python_files = ["*_test.py"]
+
+[tool.coverage.report]
+# NOTE: Single-quoted strings are required in TOML for regular expressions
+exclude_lines = [
+  "pragma: no cover", # Need to re-enable the standard no cover match
+  '^\s*pass\s*$', # Skip any pass lines
+]
+
+[tool.mypy]
+disallow_untyped_defs = true
+exclude = [
+  "venv",
+  "local_data",
+  "deps/",
+  "slurm/",
+  "deprecated/",
+]
+no_implicit_optional = true
+show_error_codes = true
+warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = [
+  "importlib.metadata",
+  "setuptools",
+  "setuptools_scm",
+]

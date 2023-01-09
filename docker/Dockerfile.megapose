@@ -1,0 +1,146 @@
+ARG PYTORCH="1.11.0"
+ARG CUDA="11.3"
+ARG CUDNN="8"
+ARG PYTHON_VERSION=3.8
+
+# FROM pytorch/pytorch:${PYTORCH}-cuda${CUDA}-cudnn${CUDNN}-devel
+FROM nvidia/cudagl:11.3.1-devel-ubuntu20.04
+
+SHELL ["/bin/bash", "-c"]
+
+ENV DEBIAN_FRONTEND noninteractive
+
+# Needed to deal with this issue 
+# https://forums.developer.nvidia.com/t/the-repository-https-developer-download-nvidia-com-compute-cuda-repos-ubuntu1804-x86-64-release-does-not-have-a-release-file/175263
+RUN apt-get install -y --no-install-recommends ca-certificates \
+  && rm -rf /var/lib/apt/lists/* \
+  && update-ca-certificates
+
+# Hacks to deal with this issue
+# The nvidia ppa's give me the following error
+# The repository 'https://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu2004/x86_64 Release' does not have a Release file
+# See this issue https://forums.developer.nvidia.com/t/error-with-cuda-repository-on-ubuntu-20-04/188023
+# Easiest solution is to just remove them from the apt update
+RUN rm -f /etc/apt/sources.list.d/cuda.list
+RUN rm -f /etc/apt/sources.list.d/nvidia-ml.list
+
+
+RUN apt update && apt upgrade -y && \
+  apt install -y vim tar wget htop xorg openbox bzip2 \ 
+  tar apt-utils
+
+# Install Anaconda
+WORKDIR /tmp
+ENV CONDA_DIR /conda
+ENV CONDA_DISTRIB Miniconda3-latest-Linux-x86_64.sh
+RUN wget https://repo.anaconda.com/miniconda/$CONDA_DISTRIB && \
+  bash /tmp/$CONDA_DISTRIB -b -p $CONDA_DIR && rm /tmp/$CONDA_DISTRIB
+
+# Install pytorch
+RUN source $CONDA_DIR/bin/activate &&  \
+  conda install -y pytorch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 cudatoolkit=${CUDA} -c pytorch
+
+# Install jupyter
+RUN source $CONDA_DIR/bin/activate && \
+  conda install -y ipython ipykernel pip jupyterlab && \
+  pip install jupyterlab-vim && \
+  python -m ipykernel install --user --name base --display-name "base"
+
+# Install main conda dependencies
+RUN source $CONDA_DIR/bin/activate && \
+  conda install -y pinocchio rclone pillow ipython \
+  ipywidgets nodejs=17.7.1 -c conda-forge
+
+# Install main pip dependencies
+RUN source $CONDA_DIR/bin/activate && \
+  pip install selenium omegaconf simplejson line_profiler opencv-python \
+  torchnet tqdm lxml transforms3d panda3d joblib xarray pandas xarray matplotlib \
+  bokeh plyfile trimesh wget ipdb panda3d-gltf colorama pyyaml ipykernel \
+  scipy pypng h5py seaborn kornia meshcat pyarrow dt_apriltags open3d structlog \
+  imageio
+
+# Blender 
+RUN cd $HOME && \
+  wget https://mirrors.dotsrc.org/blender/release/Blender2.93/blender-2.93.8-linux-x64.tar.xz && \
+  tar -xvf blender-2.93.8-linux-x64.tar.xz && rm blender-2.93.8-linux-x64.tar.xz
+
+RUN source $CONDA_DIR/bin/activate && \
+  pip install progressbar pyyaml
+
+
+RUN apt update && apt install git curl -y && \
+  source $CONDA_DIR/bin/activate && \
+  cd /build/ && git clone https://github.com/ylabbe/bop_renderer && \
+  export OSMESA_PREFIX=/root/install/osmesa && \
+  export LLVM_PREFIX=/root/install/llvm && \
+  mkdir -p $OSMESA_PREFIX && mkdir -p $LLVM_PREFIX && \
+  conda install -c conda-forge autoconf automake libtool pkg-config cmake zlib -y && \
+  export PYTHON_PREFIX=$CONDA_PREFIX && \
+  cd /build/bop_renderer && mkdir -p osmesa-install/build && \
+  cd osmesa-install/build && bash ../osmesa-install.sh && \
+  cp -r $LLVM_PREFIX/lib/* $CONDA_PREFIX/lib && \
+  cp -r $OSMESA_PREFIX/lib/* $CONDA_PREFIX/lib && \
+  cd /build/bop_renderer && mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release && make && \
+  cp *.so $CONDA_PREFIX/lib/python3.9/site-packages
+
+# Patched Bullet
+RUN source $CONDA_DIR/bin/activate && cd /build/ && \
+  git clone https://github.com/ylabbe/bullet3 && \
+  cd bullet3 && bash build_cmake_pybullet_double.sh && \
+  python setup.py install
+
+
+# BOP toolkit lib
+RUN source $CONDA_DIR/bin/activate && cd /tmp/ && \
+  git clone https://github.com/thodan/bop_toolkit.git && \
+  cd bop_toolkit && python setup.py install
+
+RUN source $CONDA_DIR/bin/activate && pip install psutil
+# Patched Panda3D
+RUN apt update && apt install -y locales \
+  build-essential pkg-config fakeroot python3-dev libpng-dev \
+  libjpeg-dev libtiff-dev zlib1g-dev libssl-dev libx11-dev \
+  libgl1-mesa-dev libxrandr-dev libxxf86dga-dev libxcursor-dev \
+  bison flex libfreetype6-dev libvorbis-dev libeigen3-dev \
+  libopenal-dev libode-dev libbullet-dev nvidia-cg-toolkit \
+  libgtk2.0-dev libassimp-dev libopenexr-dev \
+  libjpeg9 patchelf && \
+  locale-gen en_US.UTF-8 && \
+  source $CONDA_DIR/bin/activate && \
+  cd /tmp && \
+  git clone https://github.com/ylabbe/panda3d -b rebase && \
+  cd panda3d && \
+  python makepanda/makepanda.py --everything --wheel --threads 24  \
+  --no-directscripts \
+  --python-incdir=/conda/include/ --python-libdir=/conda/lib && \
+  pip uninstall -y panda3d && pip install panda3d*.whl
+
+# Install specific h5py version to avoid memory leak
+RUN source $CONDA_DIR/bin/activate && pip install h5py==3.3.0
+
+RUN source $CONDA_DIR/bin/activate && \
+  pip install webdataset \
+  opencv-contrib-python \
+  roma \
+  torchgeometry \
+  probreg \
+  cupoch
+
+# Install tmux
+RUN apt-get install -y tmux
+
+# Install TEASER++
+RUN apt install -y cmake libeigen3-dev libboost-all-dev \
+  && source $CONDA_DIR/bin/activate \
+  && pip install open3d \
+  && mkdir /build && cd /build && git clone https://github.com/MIT-SPARK/TEASER-plusplus.git \
+  && cd TEASER-plusplus && mkdir build && cd build \
+  && cmake -DTEASERPP_PYTHON_VERSION=3.9 .. && make teaserpp_python \
+  && source $CONDA_DIR/bin/activate \
+  && cd python && pip install .
+
+
+# Install pytorch3d
+RUN source $CONDA_DIR/bin/activate && \
+  pip install fvcore \
+  && pip install --no-index --no-cache-dir pytorch3d -f https://dl.fbaipublicfiles.com/pytorch3d/packaging/wheels/py39_cu113_pyt1110/download.html
