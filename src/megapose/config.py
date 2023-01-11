@@ -15,7 +15,6 @@ limitations under the License.
 """
 
 
-
 # Standard Library
 import os
 from pathlib import Path
@@ -29,12 +28,10 @@ import megapose
 
 PROJECT_ROOT = Path(megapose.__file__).parent.parent.parent
 PROJECT_DIR = PROJECT_ROOT
-LOCAL_DATA_DIR = Path(os.environ.get("LOCAL_DATA_DIR", Path(PROJECT_DIR) / "local_data"))
+LOCAL_DATA_DIR = Path(os.environ.get("MEGAPOSE_DATA_DIR", Path(PROJECT_DIR) / "local_data"))
 BOP_DS_DIR = LOCAL_DATA_DIR / "bop_datasets"
-NGC_BOP_DS_DIR = Path("tmp/bop_datasets")
 NB_DATA_DIR = LOCAL_DATA_DIR / "notebook_data"
 SHAPENET_DIR = LOCAL_DATA_DIR / "shapenetcorev2"
-HDF5_DS_DIR = LOCAL_DATA_DIR / "hdf5_datasets"
 WDS_DS_DIR = LOCAL_DATA_DIR / "webdatasets"
 
 BOP_TOOLKIT_DIR = PROJECT_ROOT / "deps" / "bop_toolkit_challenge"
