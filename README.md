@@ -389,54 +389,20 @@ You can then run the notebook [`megapose_estimator_visualization.ipynb`](noteboo
 <details>
 <summary>Click for details...</summary>
 
+
 ### VSCode setup
-Create a virtual environment (e.g. using venv or anaconda).
 Install dev tools `pip install -e ".[ci,dev]"`
 
-1. Add `megapose` subfolder to python --> Extra Paths
-2. Set default formatter to `black`.
+We use the following tools:
 
-An example of `.vscode/settings.json` is the following:
-```
-{
-    "python.defaultInterpreterPath": "/local/anaconda3/envs/megapose",
-    "editor.formatOnSave": true,
-    "python.formatting.provider": "black",
-    "[python]": {
-        "editor.codeActionsOnSave": {
-            "source.organizeImports": true
-        }
-    },
-    "python.linting.enabled": true,
-    "python.linting.flake8Enabled": true,
-    "python.linting.mypyEnabled": true,
-}
-```
+- Formatting: `black`
+- Sort python imports: `isort`
+- Linting: `flake8`
+- Type checking: `mypy`
+- Tests: `pytest`
 
-### Format code
-```bash
-black .
-```
+An example of vscode config file is provided in `.vscode/settings.json`.
 
-### Sort imports
-```bash
-isort .
-```
-
-### Lint files
-```bash
-flake8  .
-```
-
-### Type check files
-```bash
-mypy .
-```
-
-### Run tests
-```bash
-pytest .
-```
 
 ### Produce coverage report
 ```bash

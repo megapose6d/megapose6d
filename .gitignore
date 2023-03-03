@@ -1,6 +1,5 @@
 __pycache__
 .ipynb_checkpoints
-.vscode
 logs
 *.pyc
 *.lprof
