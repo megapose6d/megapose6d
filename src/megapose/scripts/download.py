@@ -48,7 +48,9 @@ def main():
         # rclone copyto megapose_public_readonly:/megapose-models megapose-models/ \
         #     --exclude="**epoch**" --config $MEGAPOSE_DIR/rclone.conf -P
         gdrive_download(
-            f"/megapose-models", LOCAL_DATA_DIR / "megapose-models", flags='--exclude="**epoch**"'
+            f"/megapose-models",
+            LOCAL_DATA_DIR / "megapose-models",
+            flags=["--exclude", "*epoch*"],
         )
 
     if args.example_data:
@@ -108,7 +110,7 @@ def gdrive_download(gdrive_path, local_path, flags=[]):
     rclone_path = RCLONE_ROOT + str(gdrive_path)
     local_path = str(local_path)
     logger.info(f"Copying {rclone_path} to {local_path}")
-    run_rclone("copyto", [rclone_path, local_path], flags=["-P"] + flags)
+    run_rclone("copyto", [rclone_path, local_path], flags=flags + ["-P"])
 
 
 if __name__ == "__main__":
