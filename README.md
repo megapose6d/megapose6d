@@ -71,7 +71,6 @@ We support running `megapose` either in a [`conda`](#conda-installation) environ
 We will create a `conda` environment named `megapose` that contains all the dependencies, then install the `megapose` python package inside.
 
 ```
-cd $MEGAPOSE_DIR
 conda env create -f conda/environment_full.yaml
 conda activate megapose
 pip install -e .
