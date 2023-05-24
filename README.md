@@ -221,7 +221,6 @@ In this tutorial, we estimate the pose for a barbecue sauce bottle (from the [HO
 ```
 python -m megapose.scripts.download --example_data
 ```
-```
 
 The input files are the following:
 ```

@@ -26,7 +26,6 @@ dependencies:
   - selenium
   - geckodriver
   - firefox
-  - eigenpy
   - pip:
       - meshcat
       - selenium

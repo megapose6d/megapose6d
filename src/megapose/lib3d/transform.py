@@ -15,17 +15,13 @@ limitations under the License.
 """
 
 
-
 # Standard Library
 from typing import Tuple, Union
 
 # Third Party
-import eigenpy
 import numpy as np
 import pinocchio as pin
 import torch
-
-eigenpy.switchToNumpyArray()
 
 
 class Transform:
