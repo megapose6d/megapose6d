@@ -212,7 +212,7 @@ We provide a tutorial for running inference on an image with a novel object. You
 Pose estimation models are available at this [url](https://drive.google.com/drive/folders/1c3z8IkyIUThYxTU7CIs4QJ3kvD0RkyCz). You can download it using `rlcone`:
 ```
 cd $MEGAPOSE_DATA_DIR
-rclone copyto megapose_public_readonly:/megapose-models megapose-models/ --exclude="**epoch**" --config $MEGAPOSE_DIR/rclone.conf -P
+rclone copyto inria_data:megapose-models/ megapose-models/ --exclude="**epoch**" --config $MEGAPOSE_DIR/rclone.conf -P
 ```
 
 ## 2. Download example data
@@ -220,7 +220,7 @@ In this tutorial, we estimate the pose for a barbecue sauce bottle (from the [HO
 
 ```
 cd $MEGAPOSE_DATA_DIR
-rclone copyto megapose_public_readonly:/examples examples/ --config $MEGAPOSE_DIR/rclone.conf -P
+rclone copyto inria_data:examples/ examples/ --config $MEGAPOSE_DIR/rclone.conf -P
 ```
 
 The input files are the following:
@@ -310,11 +310,11 @@ For optimal performance, we recommend using `megapose-1.0-RGB-multi-hypothesis` 
 # Dataset
 
 ## Dataset information
-The dataset is available at this [url](https://drive.google.com/drive/folders/1CXc_GG11jNVMeGr-Mb4o4iiNjYeKDkKd?usp=sharing). It is split into two datasets: `gso_1M` (Google Scanned Objects) and `shapenet_1M` (ShapeNet objects). Each dataset has 1 million images which were generated using [BlenderProc](https://github.com/DLR-RM/BlenderProc).
+The dataset is available at this [url](https://www.paris.inria.fr/archive_ylabbeprojectsdata/megapose/webdatasets/). It is split into two datasets: `gso_1M` (Google Scanned Objects) and `shapenet_1M` (ShapeNet objects). Each dataset has 1 million images which were generated using [BlenderProc](https://github.com/DLR-RM/BlenderProc).
 
 Datasets are released in the [webdataset](https://github.com/webdataset/webdataset) format for high reading performance. Each dataset is split into chunks of size ~600MB containing 1000 images each. 
 
-We provide the pre-processed meshes ready to be used for rendering and training in this [directory](https://drive.google.com/drive/folders/1AYxkv7jpDniOnTcMAxiWbdhPo8WBJaZG):
+We provide the pre-processed meshes ready to be used for rendering and training in this [directory](https://www.paris.inria.fr/archive_ylabbeprojectsdata/megapose/tars/):
 - `google_scanned_objects.zip`
 - `shapenetcorev2.zip`
 
@@ -327,14 +327,14 @@ The following commands download 10 chunks of each dataset as well as metadatas:
 
 ```
 cd $MEGAPOSE_DATA_DIR
-rclone copyto megapose_public_readonly:/webdatasets/ webdatasets/ --include "0000000*.tar" --include "*.json" --include "*.feather" --config $MEGAPOSE_DIR/rclone.conf -P
+rclone copyto inria_data:webdatasets/ webdatasets/ --include "0000000*.tar" --include "*.json" --include "*.feather" --config $MEGAPOSE_DIR/rclone.conf -P
 ```
 
 We then download the object models (please make sure you have access to the original datasets before downloading these preprocessed ones):
 
 ```
 cd $MEGAPOSE_DATA_DIR
-rclone copyto megapose_public_readonly:/tars tars/ --include "shapenetcorev2.zip" --include "google_scanned_objects.zip" --config $MEGAPOSE_DIR/rclone.conf -P
+rclone copyto inria_data:tars/ tars/ --include "shapenetcorev2.zip" --include "google_scanned_objects.zip" --config $MEGAPOSE_DIR/rclone.conf -P
 unzip tars/shapenetcorev2.zip
 unzip tars/google_scanned_objects.zip
 ```
