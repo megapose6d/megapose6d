@@ -44,25 +44,25 @@ def main():
         logger.setLevel(logging.DEBUG)
 
     if args.megapose_models:
-        # rclone copyto inria_data:/megapose-models/ megapose-models/ \
+        # rclone copyto inria_data:megapose-models/ megapose-models/
         #     --exclude="**epoch**" --config $MEGAPOSE_DIR/rclone.conf -P
         download(
-            f"/megapose-models/",
+            f"megapose-models/",
             LOCAL_DATA_DIR / "megapose-models/",
             flags=["--exclude", "*epoch*"],
         )
 
     if args.example_data:
-        # rclone copyto inria_data:/examples/ examples/ \
+        # rclone copyto inria_data:examples/ examples/
         #     --config $MEGAPOSE_DIR/rclone.conf -P
-        download(f"/examples/", LOCAL_DATA_DIR / "examples")
+        download(f"examples/", LOCAL_DATA_DIR / "examples")
 
     if args.data_subset:
-        # rclone copyto inria_data:/webdatasets/ webdatasets/ \
-        #     --include "0000000*.tar" --include "*.json" --include "*.feather" \
+        # rclone copyto inria_data:webdatasets/ webdatasets/
+        #     --include "0000000*.tar" --include "*.json" --include "*.feather"
         #     --config $MEGAPOSE_DIR/rclone.conf -P
         download(
-            f"/webdatasets/",
+            f"webdatasets/",
             LOCAL_DATA_DIR / "webdatasets/",
             flags=[
                 "--include",
@@ -75,13 +75,13 @@ def main():
         )
 
     if args.data_object_models:
-        # rclone copyto inria_data:/tars tars/ \
+        # rclone copyto inria_data:tars/ tars/
         #     --include "shapenetcorev2.zip" --include "google_scanned_objects.zip"
         #     --config $MEGAPOSE_DIR/rclone.conf -P
         # unzip tars/shapenetcorev2.zip
         # unzip tars/google_scanned_objects.zip
         download(
-            f"/tars/",
+            f"tars/",
             LOCAL_DATA_DIR / "tars/",
             flags=[
                 "--include",
@@ -106,7 +106,7 @@ def download(download_path, local_path, flags=[]):
     download_path = Path(download_path)
     if download_path.name != local_path.name:
         local_path = local_path / download_path.name
-    rclone_path = RCLONE_ROOT + str(download_path)
+    rclone_path = RCLONE_ROOT + str(download_path) + "/"
     local_path = str(local_path)
     logger.info(f"Copying {rclone_path} to {local_path}")
     run_rclone("copyto", [rclone_path, local_path], flags=flags + ["-P"])
