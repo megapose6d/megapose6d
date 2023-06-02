@@ -209,14 +209,14 @@ $MEGAPOSE_DATA_DIR/
 We provide a tutorial for running inference on an image with a novel object. You can adapt this tutorial to your own example.
 
 ## 1. Download pre-trained pose estimation models
-Pose estimation models are available at this [url](https://drive.google.com/drive/folders/1c3z8IkyIUThYxTU7CIs4QJ3kvD0RkyCz). You can download it using `rlcone`:
+Pose estimation models are available at this [url](https://www.paris.inria.fr/archive_ylabbeprojectsdata/megapose/megapose-models/). You can download it using `rlcone`:
 ```
 cd $MEGAPOSE_DATA_DIR
 rclone copyto inria_data:megapose-models/ megapose-models/ --exclude="**epoch**" --config $MEGAPOSE_DIR/rclone.conf -P
 ```
 
 ## 2. Download example data
-In this tutorial, we estimate the pose for a barbecue sauce bottle (from the [HOPE](https://github.com/swtyree/hope-dataset) dataset, not used during training of MegaPose). We start by downloading the inputs necessary to MegaPose for this tutorial (you can also use this [link](https://drive.google.com/drive/folders/10BIvhnrKGbNr8EKGB3KUtkSNcp460k9S)):
+In this tutorial, we estimate the pose for a barbecue sauce bottle (from the [HOPE](https://github.com/swtyree/hope-dataset) dataset, not used during training of MegaPose). We start by downloading the inputs necessary to MegaPose for this tutorial (you can also use this [link](https://www.paris.inria.fr/archive_ylabbeprojectsdata/megapose/examples/)):
 
 ```
 cd $MEGAPOSE_DATA_DIR
@@ -372,7 +372,7 @@ You can then use the [`render_megapose_dataset.ipynb`](notebooks/render_megapos
 
 <summary> Click for details ... </summary>
 
-For in-depth analysis of the results, please download [this folder](https://drive.google.com/file/d/1wmTd86hGfVNWTvNi-S6hBGPhsRB2r-zf/view?usp=sharing) from google drive and place the contents in `$MEGAPOSE_DATA_DIR`. After downloading you should have a folder structure like
+For in-depth analysis of the results, please download [this folder](https://www.paris.inria.fr/archive_ylabbeprojectsdata/megapose/tars/) from google drive and place the contents in `$MEGAPOSE_DATA_DIR`. After downloading you should have a folder structure like
 
 ```
 $MEGAPOSE_DATA_DIR/
