@@ -19,7 +19,6 @@ limitations under the License.
 import argparse
 import logging
 import subprocess
-import zipfile
 from pathlib import Path
 
 # MegaPose
@@ -29,7 +28,7 @@ from megapose.utils.logging import get_logger
 logger = get_logger(__name__)
 
 RCLONE_CFG_PATH = PROJECT_DIR / "rclone.conf"
-RCLONE_ROOT = "megapose_public_readonly:"
+RCLONE_ROOT = "inria_data:"
 
 
 def main():
@@ -45,26 +44,26 @@ def main():
         logger.setLevel(logging.DEBUG)
 
     if args.megapose_models:
-        # rclone copyto megapose_public_readonly:/megapose-models megapose-models/ \
+        # rclone copyto inria_data:/megapose-models/ megapose-models/ \
         #     --exclude="**epoch**" --config $MEGAPOSE_DIR/rclone.conf -P
-        gdrive_download(
-            f"/megapose-models",
-            LOCAL_DATA_DIR / "megapose-models",
+        download(
+            f"/megapose-models/",
+            LOCAL_DATA_DIR / "megapose-models/",
             flags=["--exclude", "*epoch*"],
         )
 
     if args.example_data:
-        # rclone copyto megapose_public_readonly:/examples examples/ \
+        # rclone copyto inria_data:/examples/ examples/ \
         #     --config $MEGAPOSE_DIR/rclone.conf -P
-        gdrive_download(f"/examples", LOCAL_DATA_DIR / "examples")
+        download(f"/examples/", LOCAL_DATA_DIR / "examples")
 
     if args.data_subset:
-        # rclone copyto megapose_public_readonly:/webdatasets/ webdatasets/ \
+        # rclone copyto inria_data:/webdatasets/ webdatasets/ \
         #     --include "0000000*.tar" --include "*.json" --include "*.feather" \
         #     --config $MEGAPOSE_DIR/rclone.conf -P
-        gdrive_download(
-            f"/webdatasets",
-            LOCAL_DATA_DIR / "webdatasets",
+        download(
+            f"/webdatasets/",
+            LOCAL_DATA_DIR / "webdatasets/",
             flags=[
                 "--include",
                 args.data_subset,
@@ -76,14 +75,14 @@ def main():
         )
 
     if args.data_object_models:
-        # rclone copyto megapose_public_readonly:/tars tars/ \
+        # rclone copyto inria_data:/tars tars/ \
         #     --include "shapenetcorev2.zip" --include "google_scanned_objects.zip"
         #     --config $MEGAPOSE_DIR/rclone.conf -P
         # unzip tars/shapenetcorev2.zip
         # unzip tars/google_scanned_objects.zip
-        gdrive_download(
-            f"/tars",
-            LOCAL_DATA_DIR / "tars",
+        download(
+            f"/tars/",
+            LOCAL_DATA_DIR / "tars/",
             flags=[
                 "--include",
                 "shapenetcorev2.zip",
@@ -103,11 +102,11 @@ def run_rclone(cmd, args, flags):
     subprocess.run(rclone_cmd)
 
 
-def gdrive_download(gdrive_path, local_path, flags=[]):
-    gdrive_path = Path(gdrive_path)
-    if gdrive_path.name != local_path.name:
-        local_path = local_path / gdrive_path.name
-    rclone_path = RCLONE_ROOT + str(gdrive_path)
+def download(download_path, local_path, flags=[]):
+    download_path = Path(download_path)
+    if download_path.name != local_path.name:
+        local_path = local_path / download_path.name
+    rclone_path = RCLONE_ROOT + str(download_path)
     local_path = str(local_path)
     logger.info(f"Copying {rclone_path} to {local_path}")
     run_rclone("copyto", [rclone_path, local_path], flags=flags + ["-P"])

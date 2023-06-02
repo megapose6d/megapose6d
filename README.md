@@ -213,10 +213,10 @@ Download pose estimation models to `$MEGAPOSE_DATA_DIR/megapose-models`:
 python -m megapose.scripts.download --megapose_models
 ```
 
-The models are also available at this [url](https://drive.google.com/drive/folders/1c3z8IkyIUThYxTU7CIs4QJ3kvD0RkyCz).
+The models are also available at this [url](https://www.paris.inria.fr/archive_ylabbeprojectsdata/megapose/megapose-models/).
 
 ## 2. Download example data
-In this tutorial, we estimate the pose for a barbecue sauce bottle (from the [HOPE](https://github.com/swtyree/hope-dataset) dataset, not used during training of MegaPose). We start by downloading the inputs necessary to MegaPose for this tutorial (you can also use this [link](https://drive.google.com/drive/folders/10BIvhnrKGbNr8EKGB3KUtkSNcp460k9S)) to `$MEGAPOSE_DATA_DIR/examples`:
+In this tutorial, we estimate the pose for a barbecue sauce bottle (from the [HOPE](https://github.com/swtyree/hope-dataset) dataset, not used during training of MegaPose). We start by downloading the inputs necessary to MegaPose for this tutorial (you can also use this [link](https://www.paris.inria.fr/archive_ylabbeprojectsdata/megapose/examples/)):
 
 ```
 python -m megapose.scripts.download --example_data
@@ -309,11 +309,11 @@ For optimal performance, we recommend using `megapose-1.0-RGB-multi-hypothesis` 
 # Dataset
 
 ## Dataset information
-The dataset is available at this [url](https://drive.google.com/drive/folders/1CXc_GG11jNVMeGr-Mb4o4iiNjYeKDkKd?usp=sharing). It is split into two datasets: `gso_1M` (Google Scanned Objects) and `shapenet_1M` (ShapeNet objects). Each dataset has 1 million images which were generated using [BlenderProc](https://github.com/DLR-RM/BlenderProc).
+The dataset is available at this [url](https://www.paris.inria.fr/archive_ylabbeprojectsdata/megapose/webdatasets/). It is split into two datasets: `gso_1M` (Google Scanned Objects) and `shapenet_1M` (ShapeNet objects). Each dataset has 1 million images which were generated using [BlenderProc](https://github.com/DLR-RM/BlenderProc).
 
 Datasets are released in the [webdataset](https://github.com/webdataset/webdataset) format for high reading performance. Each dataset is split into chunks of size ~600MB containing 1000 images each. 
 
-We provide the pre-processed meshes ready to be used for rendering and training in this [directory](https://drive.google.com/drive/folders/1AYxkv7jpDniOnTcMAxiWbdhPo8WBJaZG):
+We provide the pre-processed meshes ready to be used for rendering and training in this [directory](https://www.paris.inria.fr/archive_ylabbeprojectsdata/megapose/tars/):
 - `google_scanned_objects.zip`
 - `shapenetcorev2.zip`
 
@@ -367,7 +367,7 @@ You can then use the [`render_megapose_dataset.ipynb`](notebooks/render_megapos
 
 <summary> Click for details ... </summary>
 
-For in-depth analysis of the results, please download [this folder](https://drive.google.com/file/d/1wmTd86hGfVNWTvNi-S6hBGPhsRB2r-zf/view?usp=sharing) from google drive and place the contents in `$MEGAPOSE_DATA_DIR`. After downloading you should have a folder structure like
+For in-depth analysis of the results, please download [this folder](https://www.paris.inria.fr/archive_ylabbeprojectsdata/megapose/tars/) from google drive and place the contents in `$MEGAPOSE_DATA_DIR`. After downloading you should have a folder structure like
 
 ```
 $MEGAPOSE_DATA_DIR/
