@@ -15,7 +15,6 @@ limitations under the License.
 """
 
 
-
 # Standard Library
 import contextlib
 import logging
@@ -23,6 +22,8 @@ import time
 from datetime import timedelta
 from io import StringIO
 from typing import Optional
+
+logging.basicConfig()
 
 
 class ElapsedFormatter:

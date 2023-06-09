@@ -12,7 +12,6 @@ test_data/
 stdout*
 *.slurm
 .mypy_cache
-local_data/
 dist/
 *.so
 build/
@@ -21,5 +20,4 @@ nerfpose/scripts/ngp
 my-notebooks/
 tmp/
 *tmp/
-local_data
 tests.sh

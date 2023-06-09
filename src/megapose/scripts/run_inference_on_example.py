@@ -12,6 +12,7 @@ from bokeh.plotting import gridplot
 from PIL import Image
 
 # MegaPose
+from megapose.config import LOCAL_DATA_DIR
 from megapose.datasets.object_dataset import RigidObject, RigidObjectDataset
 from megapose.datasets.scene_dataset import CameraData, ObjectData
 from megapose.inference.types import (
@@ -215,9 +216,7 @@ if __name__ == "__main__":
     parser.add_argument("--vis-outputs", action="store_true")
     args = parser.parse_args()
 
-    data_dir = os.getenv("MEGAPOSE_DATA_DIR")
-    assert data_dir
-    example_dir = Path(data_dir) / "examples" / args.example_name
+    example_dir = LOCAL_DATA_DIR / "examples" / args.example_name
 
     if args.vis_detections:
         make_detections_visualization(example_dir)

@@ -6,7 +6,7 @@ Yann Labbé, Lucas Manuelli, Arsalan Mousavian, Stephen Tyree, Stan Birchfield, 
 [[Paper]](https://arxiv.org/abs/2212.06870) [[Project page]](https://megapose6d.github.io/)
 
 ## News
-- **09.01.2023** We release two new variants of our approach (see the [Model Zoo](#model-zoo)).
+- **09.01.2023** We released two new variants of our approach (see the [Model Zoo](#model-zoo)).
 - **09.01.2023** Code, models and dataset are released in this repository.
 - **10.09.2022** The paper is accepted at CoRL 2022.
 
@@ -54,18 +54,16 @@ We provide the synthetic dataset we used to train MegaPose. The dataset contains
 # Installation
 Once you are done with the installation, we recommend you head to the [Inference tutorial](#inference-tutorial). 
 
+## 1. Clone the repository
 The first step is to clone the repo and submodules:
 ```
 git clone https://github.com/megapose6d/megapose6d.git
 cd megapose6d && git submodule update --init
 ```
+## 2. Set environment variables (optional)
+For convenience, the MegaPose data directory can be changed by setting the environment variable `MEGAPOSE_DATA_DIR`. For example the data for the inference example will be downloaded to `MEGAPOSE_DATA_DIR/examples`. If not set manually, the directory `local_data/` under the project root will be used.
 
-## 1. Set environment variables
-You should set the following environment variables:
-- `MEGAPOSE_DIR`:  The root directory of the `megapose` project.
-- `MEGAPOSE_DATA_DIR`: The root directory of the data directory. For example the data for the inference example will be downloaded to `MEGAPOSE_DATA_DIR/examples`.
-
-## 2. Install depedencies with conda or use the docker image
+## 3. Install dependencies with conda or use the docker image
 We support running `megapose` either in a [`conda`](#conda-installation) environment or in a [`docker`](#docker-installation) container. For simplicity, we recommend using `conda` if you are not running on a cloud computer. Once you are done with the installation, you can head directly to the [inference tutorial](#inference-tutorial) or [dataset usage](#dataset).
 
 ### Option A: Conda Installation
@@ -73,11 +71,12 @@ We support running `megapose` either in a [`conda`](#conda-installation) environ
 We will create a `conda` environment named `megapose` that contains all the dependencies, then install the `megapose` python package inside.
 
 ```
-cd $MEGAPOSE_DIR
 conda env create -f conda/environment_full.yaml
 conda activate megapose
 pip install -e .
 ```
+
+If you plan to further develop the MegaPose code, you may want to install dev tools via `pip install -e ".[ci,dev]"`. See [here](#dev-ops) for more details.
 
 ### Option B: Docker Installation
 <details>
@@ -92,7 +91,7 @@ conda env create -f conda/environment.yaml
 
 ### Install dependencies in conda
 
-Activate the conda environment and install `job_runner` and `megapose`. Note that the `megapose` install inside `conda` is just to enable us to run the data download scripts from the host machine rather than from `docker`. Navigate to the project root, if you haven't set `MEGAPOSE_DIR` then do it now
+Activate the conda environment and install `job_runner` and `megapose`. Note that the `megapose` install inside `conda` is just to enable us to run the data download scripts from the host machine rather than from `docker`. Navigate to the project root, and set `MEGAPOSE_DIR`.
 
 ```
 export MEGAPOSE_DIR=`pwd`
@@ -209,18 +208,18 @@ $MEGAPOSE_DATA_DIR/
 We provide a tutorial for running inference on an image with a novel object. You can adapt this tutorial to your own example.
 
 ## 1. Download pre-trained pose estimation models
-Pose estimation models are available at this [url](https://www.paris.inria.fr/archive_ylabbeprojectsdata/megapose/megapose-models/). You can download it using `rlcone`:
+Download pose estimation models to `$MEGAPOSE_DATA_DIR/megapose-models`:
 ```
-cd $MEGAPOSE_DATA_DIR
-rclone copyto inria_data:megapose-models/ megapose-models/ --exclude="**epoch**" --config $MEGAPOSE_DIR/rclone.conf -P
+python -m megapose.scripts.download --megapose_models
 ```
+
+The models are also available at this [url](https://www.paris.inria.fr/archive_ylabbeprojectsdata/megapose/megapose-models/).
 
 ## 2. Download example data
 In this tutorial, we estimate the pose for a barbecue sauce bottle (from the [HOPE](https://github.com/swtyree/hope-dataset) dataset, not used during training of MegaPose). We start by downloading the inputs necessary to MegaPose for this tutorial (you can also use this [link](https://www.paris.inria.fr/archive_ylabbeprojectsdata/megapose/examples/)):
 
 ```
-cd $MEGAPOSE_DATA_DIR
-rclone copyto inria_data:examples/ examples/ --config $MEGAPOSE_DIR/rclone.conf -P
+python -m megapose.scripts.download --example_data
 ```
 
 The input files are the following:
@@ -323,20 +322,16 @@ We provide the pre-processed meshes ready to be used for rendering and training 
 ## Usage
 We provide utilies for loading and visualizing the data.
 
-The following commands download 10 chunks of each dataset as well as metadatas:
+The following commands download 10 chunks of each dataset as well as metadata files:
 
 ```
-cd $MEGAPOSE_DATA_DIR
-rclone copyto inria_data:webdatasets/ webdatasets/ --include "0000000*.tar" --include "*.json" --include "*.feather" --config $MEGAPOSE_DIR/rclone.conf -P
+python -m megapose.scripts.download --data_subset "0000000*.tar"
 ```
 
 We then download the object models (please make sure you have access to the original datasets before downloading these preprocessed ones):
 
 ```
-cd $MEGAPOSE_DATA_DIR
-rclone copyto inria_data:tars/ tars/ --include "shapenetcorev2.zip" --include "google_scanned_objects.zip" --config $MEGAPOSE_DIR/rclone.conf -P
-unzip tars/shapenetcorev2.zip
-unzip tars/google_scanned_objects.zip
+python -m megapose.scripts.download --data_object_models
 ```
 
 Your directory structure should look like this:
