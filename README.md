@@ -191,19 +191,6 @@ runjob-docker --project=megapose --build-local --version 1.0
 </details>
 
 
-<!-- # Download Data and Models
-
-Download [this folder](https://drive.google.com/file/d/1wmTd86hGfVNWTvNi-S6hBGPhsRB2r-zf/view?usp=sharing) from google drive and place the contents in `$MEGAPOSE_DATA_DIR`. After downloading you should have a folder structure like
-
-```
-$MEGAPOSE_DATA_DIR/
-    bop_datasets/
-    bop_models_panda3d/
-    custom_models_panda3d/
-    experiments/
-    sensor_images/
-``` -->
-
 # Inference tutorial
 We provide a tutorial for running inference on an image with a novel object. You can adapt this tutorial to your own example.
 
